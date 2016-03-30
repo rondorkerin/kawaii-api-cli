@@ -12,7 +12,9 @@ module NativeSyncCli
       def load
         path = File.expand_path('~/.nativesync.yml')
         raise "please use `ns login` or `ns signup` before attempting to use the API." unless (File.exist? path)
-        @config = YAML.load_file(source)
+        @config = YAML.load_file(path)
+        puts @config
+        @config
       end
 
       def include?(key)

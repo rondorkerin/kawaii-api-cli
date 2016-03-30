@@ -9,11 +9,11 @@ module NativeSyncCli
     # Rest Call
     def self.rest(method, endpoint, payload=nil, api_key=nil)
       full_url = URI.join("https://api.nativesync.io", "/v1#{endpoint}").to_s
-      full_url = URI.join("https://4c949tv2j6.execute-api.us-west-2.amazonaws.com", "/prod/v1#{endpoint}").to_s
+      # full_url = URI.join("https://4c949tv2j6.execute-api.us-west-2.amazonaws.com", "/prod/v1#{endpoint}").to_s
 
       begin
         # we only post to NS
-        response = RestClient.post full_url, payload.to_json,  :content_type => :json, :accept => :json
+        response = RestClient.post full_url, payload.to_json,  :content_type => :json, :accept => :json, :'x-api-key' => api_key
         puts "\n"
         JSON.parse(response)
       rescue SocketError => e
