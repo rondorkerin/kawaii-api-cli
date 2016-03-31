@@ -1,4 +1,0 @@
-#!/usr/bin/env ruby
-require 'nativesync_cli/cli'
-
-NativeSyncCli::CLI.start

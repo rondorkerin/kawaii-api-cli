@@ -1,28 +1,28 @@
 require 'thor'
 require 'erubis'
-require 'nativesync_cli'
-require 'nativesync_cli/version'
+require 'kawaiiapi_cli'
+require 'kawaiiapi_cli/version'
 require 'json'
 require 'yaml'
 
-module NativeSyncCli
+module KawaiiApiCli
   class CLI < Thor
     map "-v" => "version"
     map "--version" => "version"
 
     desc "version", "print version"
     long_desc <<-D
-      Print the NativeSync CLI tool version
+      Print the KawaiiApi CLI tool version
     D
     def version
-      NativeSyncCli.ui.info "NativeSync CLI version %s" % [NativeSyncCli::VERSION]
+      KawaiiApiCli.ui.info "KawaiiApi CLI version %s" % [KawaiiApiCli::VERSION]
     end
 
-    desc "call [SERVICE_NAME] [FUNCTION_NAME]", "Call a nativesync function"
+    desc "call [SERVICE_NAME] [FUNCTION_NAME]", "Call a kawaiiapi function"
     method_option :credentials_name, :aliases => "-c", :desc => "name of the service credentials to use"
     def call(service_name, function_name, *args)
-      config = NativeSyncCli::Config.load
-      ui = NativeSyncCli.ui
+      config = KawaiiApiCli::Config.load
+      ui = KawaiiApiCli.ui
 
       params = {}
       query = ""
@@ -39,7 +39,7 @@ module NativeSyncCli
       ui.info "posting to #{url} with params #{params.to_s} and api_key #{config['apikey']}"
 
       begin
-        response = NativeSyncCli::Util.rest "post", url, params, config['apikey']
+        response = KawaiiApiCli::Util.rest "post", url, params, config['apikey']
         if (options[:output])
           IO.write(File.expand_path(options[:output]), JSON.pretty_generate(response))
         else
@@ -52,7 +52,7 @@ module NativeSyncCli
 
     map "-f" => "file"
     map "--file" => "file"
-    desc "deploy", "Deploy code to nativesync"
+    desc "deploy", "Deploy code to kawaiiapi"
     def deploy()
       begin
         config = YAML.load("#{Dir.pwd}/nsconfig.yml")
@@ -70,7 +70,7 @@ module NativeSyncCli
         program = IO.read(File.expand_path(file_path))
         ui.info "Uploading file #{file_path} to function named #{config[:function_name]}"
         begin
-          response = call('nativesync', 'upload_cloud_function', "function_name=#{config[:function_name]}",
+          response = call('kawaiiapi', 'upload_cloud_function', "function_name=#{config[:function_name]}",
              "schedule=#{config[:schedule]}", "language=#{config[:language]}", "description=#{config[:description]}", "program=#{program}")
           ui.info response
         rescue Exception => e
@@ -80,9 +80,9 @@ module NativeSyncCli
 
     end
 
-    desc "login", "Login to nativesync"
+    desc "login", "Login to kawaiiapi"
     def login
-      ui = NativeSyncCli.ui
+      ui = KawaiiApiCli.ui
       email = ask("What is your email?")
       password = ask("What is your password?", :echo => false)
       options = {
@@ -90,17 +90,17 @@ module NativeSyncCli
         password: password
       }
       begin
-        response = NativeSyncCli::Util.rest "post", "/nativesync/login", options
-        ui.success "Your config info has been saved to ~/.nativesync.yml"
-        NativeSyncCli::Config.set(response)
+        response = KawaiiApiCli::Util.rest "post", "/kawaiiapi/login", options
+        ui.success "Your config info has been saved to ~/.kawaiiapi.yml"
+        KawaiiApiCli::Config.set(response)
       rescue Exception => e
         ui.error e
       end
     end
 
-    desc "signup", "Signup for nativesync"
+    desc "signup", "Signup for kawaiiapi"
     def signup
-      ui = NativeSyncCli.ui
+      ui = KawaiiApiCli.ui
       email = ask("What is your email?")
       company_name = ask("What is your company name?")
       company_secret = ask("What is your company secret passphrase? (if you are the first, make one up)")
@@ -112,15 +112,15 @@ module NativeSyncCli
         company_secret: company_secret
       }
       begin
-        response = NativeSyncCli::Util.rest "post", "/nativesync/signup", options
-        ui.success "Your config info has been saved to ~/.nativesync.yml"
-        NativeSyncCli::Config.set(response)
+        response = KawaiiApiCli::Util.rest "post", "/kawaiiapi/signup", options
+        ui.success "Your config info has been saved to ~/.kawaiiapi.yml"
+        KawaiiApiCli::Config.set(response)
       rescue Exception => e
         ui.error e
       end
     end
 
-    desc "compile", "compile api_specs into ns_sdk.json"
+    desc "compile", "compile api_specs into kawaii_sdk.json"
     def compile
       sdk_api_spec_template = File.read('api_specs/templates/sdk.yml.erb')
       client_api_spec_template = File.read('api_specs/templates/service.yml.erb')
@@ -130,10 +130,10 @@ module NativeSyncCli
         partial_yaml = YAML.load_file(file_name)
         api_spec_partials << partial_yaml
       end
-      ns_sdk_yaml =  Erubis::Eruby.new(sdk_api_spec_template).result({'api_spec_partials' => api_spec_partials})
-      File.open('api_specs/yml/ns_sdk.yml', 'w') { |file| file.write(ns_sdk_yaml) }
-      File.open('api_specs/json/ns_sdk.json', 'w') { |file| file.write(YAML.load(ns_sdk_yaml).to_json) }
-      File.open('ns_sdk.json', 'w') { |file| file.write(YAML.load(ns_sdk_yaml).to_json) }
+      kawaii_sdk_yaml =  Erubis::Eruby.new(sdk_api_spec_template).result({'api_spec_partials' => api_spec_partials})
+      File.open('api_specs/yml/kawaii_sdk.yml', 'w') { |file| file.write(kawaii_sdk_yaml) }
+      File.open('api_specs/json/kawaii_sdk.json', 'w') { |file| file.write(YAML.load(kawaii_sdk_yaml).to_json) }
+      File.open('kawaii_sdk.json', 'w') { |file| file.write(YAML.load(kawaii_sdk_yaml).to_json) }
     end
   end
 end

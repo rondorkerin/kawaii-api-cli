@@ -3,7 +3,7 @@ require 'thor/shell/color'
 
 ## Concepts borrowed from Vagrant UI class.
 
-module NativeSyncCli
+module KawaiiApiCli
   module UI
     class Interface
       #[:ask, :warn, :error, :info, :success].each do |method|

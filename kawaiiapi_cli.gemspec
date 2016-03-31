@@ -1,16 +1,16 @@
 # -*- encoding: utf-8 -*-
 lib = File.expand_path('../lib', __FILE__)
 $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
-require 'nativesync_cli/version'
+require 'kawaiiapi_cli/version'
 
 Gem::Specification.new do |gem|
-  gem.name          = "nativesync_cli"
-  gem.version       = NativeSyncCli::VERSION
+  gem.name          = "kawaiiapi_cli"
+  gem.version       = KawaiiApiCli::VERSION
   gem.authors       = ["Nick Bryant"]
   gem.email         = ["nick@nativesync.io"]
-  gem.description   = %q{NativeSync Command Line Tool}
-  gem.summary       = %q{This tool allows developers to build apps on nativesync using the command line.}
-  gem.homepage      = "https://github.com/nativesync/nativesync-cli"
+  gem.description   = %q{KawaiiApi Command Line Tool}
+  gem.summary       = %q{This tool allows developers to build apps on kawaiiAPI using the command line.}
+  gem.homepage      = "https://github.com/sbryant31/kawaiiapi-cli"
 
   gem.files         = `git ls-files`.split($/)
   gem.executables   = gem.files.grep(%r{^bin/}).map{ |f| File.basename(f) }

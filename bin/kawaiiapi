@@ -1,0 +1,4 @@
+#!/usr/bin/env ruby
+require 'kawaiiapi_cli/cli'
+
+KawaiiApiCli::CLI.start

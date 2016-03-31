@@ -1,4 +1,4 @@
-module NativeSyncCli
+module KawaiiApiCli
   module Util
 
     autoload :RestClient,    'rest-client'
@@ -9,7 +9,6 @@ module NativeSyncCli
     # Rest Call
     def self.rest(method, endpoint, payload=nil, api_key=nil)
       full_url = URI.join("https://api.nativesync.io", "/v1#{endpoint}").to_s
-      # full_url = URI.join("https://4c949tv2j6.execute-api.us-west-2.amazonaws.com", "/prod/v1#{endpoint}").to_s
 
       begin
         # we only post to NS
@@ -17,10 +16,10 @@ module NativeSyncCli
         puts "\n"
         JSON.parse(response)
       rescue SocketError => e
-        raise "Could not find the NativeSync server."
+        raise "Could not find the KawaiiApi server."
 
       rescue RestClient::BadGateway => e
-        raise "Could not contact the NativeSync server."
+        raise "Could not contact the KawaiiApi server."
       rescue JSON::ParserError => e
         raise response.to_s
       rescue Exception => e
