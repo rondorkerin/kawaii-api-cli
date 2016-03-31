@@ -1,0 +1,230 @@
+swagger: '2.0'
+info:
+  title: NativeSync API - nativesync calls
+  description: nativesync calls within NativeAPI
+  version: "1.0.0"
+  x-service-label: NativeSync
+  x-service-name: nativesync
+  x-credentials-type: none
+  x-credentials-template:
+
+# the domain of the service
+host: api.nativesync.io
+# array of all schemes that your API supports
+schemes:
+  - https
+# will be prefixed to all paths
+basePath: /v1/nativesync
+consumes:
+  - application/json
+produces:
+  - application/json
+securityDefinitions:
+  APIKey:
+    type: apiKey
+    name: x-api-key
+    in: header
+paths:
+  /login:
+    post:
+      summary: Login
+      description: "Returns an API token upon successful login."
+      parameters:
+        - name: credentials_name
+          in: query
+          description: Optional name of the credentials to use with this request
+          required: false
+          type: string
+        - name: input
+          in: body
+          description: Input to API
+          required: true
+          schema:
+            type: 
+            $ref: '#/definitions/login_input'
+      responses:
+        200:
+          description: API call results
+          schema:
+            $ref: '#/definitions/login_output'
+        default:
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/error'
+  /set_credentials:
+    post:
+      security:
+        - APIKey: []
+      summary: Create/Update Service Credentials
+      description: "Create/Update a named set of credentials for a particular service"
+      parameters:
+        - name: credentials_name
+          in: query
+          description: Optional name of the credentials to use with this request
+          required: false
+          type: string
+        - name: input
+          in: body
+          description: Input to API
+          required: true
+          schema:
+            type: 
+            $ref: '#/definitions/set_credentials_input'
+      responses:
+        200:
+          description: API call results
+          schema:
+            $ref: '#/definitions/set_credentials_output'
+        default:
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/error'
+  /upload_cloud_function:
+    post:
+      security:
+        - APIKey: []
+      summary: Upload Cloud Function
+      description: "Creates/Updates a function in the nativesync cloud"
+      parameters:
+        - name: credentials_name
+          in: query
+          description: Optional name of the credentials to use with this request
+          required: false
+          type: string
+        - name: input
+          in: body
+          description: Input to API
+          required: true
+          schema:
+            type: 
+            $ref: '#/definitions/upload_cloud_function_input'
+      responses:
+        200:
+          description: API call results
+          schema:
+            $ref: '#/definitions/upload_cloud_function_output'
+        default:
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/error'
+  /trigger_cloud_function:
+    post:
+      security:
+        - APIKey: []
+      summary: Trigger Cloud Function
+      description: "Triggers a function in the nativesync cloud with the specified input"
+      parameters:
+        - name: credentials_name
+          in: query
+          description: Optional name of the credentials to use with this request
+          required: false
+          type: string
+        - name: input
+          in: body
+          description: Input to API
+          required: true
+          schema:
+            type: 
+            $ref: '#/definitions/trigger_cloud_function_input'
+      responses:
+        200:
+          description: API call results
+          schema:
+            $ref: '#/definitions/trigger_cloud_function_output'
+        default:
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/error'
+definitions:
+  login_input:
+    type: object
+    required:
+      - email
+      - password
+    properties:
+      email:
+        type: string
+      password:
+        type: string
+  set_credentials_input:
+    type: object
+    required:
+      - credentials
+      - service_name
+      - name
+    properties:
+      credentials:
+        type: object
+        description: "A hash representing the credentials required for the service"
+      service_name:
+        type: string
+        description: "The name of the service to set credentials for"
+      name:
+        type: string
+        description: "An optional name for the credential set. Use this later to specify a particular set of credentials to use for an API call."
+  upload_cloud_function_input:
+    type: object
+    required:
+      - function_name
+      - program
+      - schedule
+      - language
+      - description
+    properties:
+      function_name:
+        type: string
+        description: "The name of your cloud function, only alphanumeric characters and underscores are allowed."
+      program:
+        type: string
+        description: "The cloud function program as specified by the nativesync documentation."
+      schedule:
+        type: string
+        description: "A schedule specified in cron format for how often the function should execute (visit http://crontab.guru/ for examples). Note - a job cannot be scheduled to run more than once every 15 minutes currently."
+      language:
+        type: string
+        description: "by default, only the value 'nodejs' is supported."
+      description:
+        type: string
+  trigger_cloud_function_input:
+    type: object
+    required:
+      - function_name
+      - input
+    properties:
+      function_name:
+        type: string
+        description: "The name of your cloud function, only alphanumeric characters and underscores are allowed."
+      input:
+        type: object
+        description: "A hash specifying input variables to send to the function"
+  login_output:
+    type: object
+    required:
+      - apikey
+    properties:
+      apikey:
+        type: string
+  set_credentials_output:
+    type: object
+    required:
+      - success
+    properties:
+      success:
+        type: boolean
+  upload_cloud_function_output:
+    type: object
+    required:
+      - success
+    properties:
+      success:
+        type: boolean
+  trigger_cloud_function_output:
+    type: object
+    required:
+      - success
+    properties:
+      success:
+        type: boolean
+  error:
+    type: string
+

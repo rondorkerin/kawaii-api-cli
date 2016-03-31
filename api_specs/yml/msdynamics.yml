@@ -1,0 +1,169 @@
+swagger: '2.0'
+info:
+  title: NativeSync API - msdynamics calls
+  description: msdynamics calls within NativeAPI
+  version: "1.0.0"
+  x-service-label: Microsoft Dynamics
+  x-service-name: msdynamics
+  x-credentials-type: keys
+  x-credentials-template:
+      - label: API Key
+        system_name: apikey
+        type: string
+      - label: Secret Key
+        system_name: secret
+        type: string
+
+# the domain of the service
+host: api.nativesync.io
+# array of all schemes that your API supports
+schemes:
+  - https
+# will be prefixed to all paths
+basePath: /v1/msdynamics
+consumes:
+  - application/json
+produces:
+  - application/json
+securityDefinitions:
+  APIKey:
+    type: apiKey
+    name: x-api-key
+    in: header
+paths:
+  /get_recent_contacts:
+    post:
+      security:
+        - APIKey: []
+      summary: Recently Updated/Created Contacts
+      description: "Contacts that have been recently updated or created in Microsoft Dynamics."
+      parameters:
+        - name: credentials_name
+          in: query
+          description: Optional name of the credentials to use with this request
+          required: false
+          type: string
+        - name: input
+          in: body
+          description: Input to API
+          required: true
+          schema:
+            type: 
+            $ref: '#/definitions/get_recent_contacts_input'
+      responses:
+        200:
+          description: API call results
+          schema:
+            $ref: '#/definitions/get_recent_contacts_output'
+        default:
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/error'
+  /create_contact:
+    post:
+      security:
+        - APIKey: []
+      summary: Create a Microsoft Dynamics contact
+      description: "Creates a Microsoft Dynamics contact"
+      parameters:
+        - name: credentials_name
+          in: query
+          description: Optional name of the credentials to use with this request
+          required: false
+          type: string
+        - name: input
+          in: body
+          description: Input to API
+          required: true
+          schema:
+            type: 
+            $ref: '#/definitions/create_contact_input'
+      responses:
+        200:
+          description: API call results
+          schema:
+            $ref: '#/definitions/create_contact_output'
+        default:
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/error'
+  /update_contact:
+    post:
+      security:
+        - APIKey: []
+      summary: Update Microsoft Dynamics contact
+      description: "Updates a Microsoft Dynamics contact"
+      parameters:
+        - name: credentials_name
+          in: query
+          description: Optional name of the credentials to use with this request
+          required: false
+          type: string
+        - name: input
+          in: body
+          description: Input to API
+          required: true
+          schema:
+            type: 
+            $ref: '#/definitions/update_contact_input'
+      responses:
+        200:
+          description: API call results
+          schema:
+            $ref: '#/definitions/update_contact_output'
+        default:
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/error'
+definitions:
+  get_recent_contacts_input:
+    type: object
+    required:
+      - time
+    properties:
+      time:
+        type: string
+  create_contact_input:
+    type: object
+    required:
+      - firstname
+      - lastname
+      - email
+      - custom_fields
+    properties:
+      firstname:
+        type: string
+      lastname:
+        type: string
+      email:
+        type: string
+      custom_fields:
+        type: object
+  update_contact_input:
+    type: object
+    required:
+      - vid
+      - firstname
+      - lastname
+      - email
+      - custom_fields
+    properties:
+      vid:
+        type: string
+      firstname:
+        type: string
+      lastname:
+        type: string
+      email:
+        type: string
+      custom_fields:
+        type: object
+  get_recent_contacts_output:
+    type: object
+  create_contact_output:
+    type: object
+  update_contact_output:
+    type: object
+  error:
+    type: string
+

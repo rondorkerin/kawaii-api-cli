@@ -1,0 +1,28 @@
+service_label: HTTP Request
+service_name: http_request
+credentials_type: none
+credentials_template:
+
+paths:
+  - function_name: post
+    summary: POST Request
+    description: Send a POST request to the specified URL
+    input:
+    output:
+  - function_name: get
+    summary: Sends GET request
+    description: Sends a HTTP GET request to the specified URL
+    input:
+    output:
+  - function_name: parse_html_page
+    summary: Parse a HTML page
+    description: Sends a HTTP GET request to the specified URL and parses the result
+    input:
+      url:
+        type: string
+      headers:
+        type: object
+    output:
+      document:
+        type: object
+        description: HTML document in a hash/array format

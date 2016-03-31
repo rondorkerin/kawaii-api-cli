@@ -1,0 +1,86 @@
+service_label: LeadCommerce
+service_name: leadcommerce
+credentials_type: keys
+credentials_template:
+  - label: Company Domain
+    system_name: domain
+    type: string
+  - label: Identifier
+    system_name: identifier
+    type: string
+  - label: Key
+    system_name: key
+    type: string
+
+paths:
+  - function_name: get_orders
+    summary: Get Orders
+    description: Gets the filtered list of Orders.
+    output_type: array
+    input:
+      status:
+        type: integer
+      display_id:
+        type: integer
+      alternative_id:
+        type: integer
+      total_max:
+        type: number
+      total_min:
+        type: number
+      paid_max:
+        type: number
+      paid_min:
+        type: number
+      sale_channel:
+        type: integer
+      company:
+        type: integer
+      customer_id:
+        type: integer
+      customer_type:
+        type: integer
+      fully_received_start:
+        type: string
+        format: date
+      fully_received_end:
+        type: integer
+      placed_start:
+        type: integer
+      placed_end:
+        type: integer
+      modify_start:
+        type: integer
+      modify_end:
+        type: integer
+      limit:
+        type: integer
+      page:
+        type: integer
+    output:
+      order_info:
+        type: object
+  - function_name: get_order_info
+    summary: Get Order Info
+    description: Gets Information regard one or more Orders
+    output_type: array
+    input:
+      order_ids:
+        type: array
+        subtype: integer
+        required: true
+    output:
+      order_info:
+        type: object
+  - function_name: get_order_product_info
+    summary: Get Product Info for Order
+    description: Gets Product Information regarding one or more Orders
+    output_type: array
+    input:
+      order_ids:
+        type: array
+        subtype: integer
+        required: true
+    output:
+      product_info:
+        type: object

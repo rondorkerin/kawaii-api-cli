@@ -1,0 +1,141 @@
+swagger: '2.0'
+info:
+  title: NativeSync API - http_request calls
+  description: http_request calls within NativeAPI
+  version: "1.0.0"
+  x-service-label: HTTP Request
+  x-service-name: http_request
+  x-credentials-type: none
+  x-credentials-template:
+
+# the domain of the service
+host: api.nativesync.io
+# array of all schemes that your API supports
+schemes:
+  - https
+# will be prefixed to all paths
+basePath: /v1/http_request
+consumes:
+  - application/json
+produces:
+  - application/json
+securityDefinitions:
+  APIKey:
+    type: apiKey
+    name: x-api-key
+    in: header
+paths:
+  /post:
+    post:
+      security:
+        - APIKey: []
+      summary: POST Request
+      description: "Send a POST request to the specified URL"
+      parameters:
+        - name: credentials_name
+          in: query
+          description: Optional name of the credentials to use with this request
+          required: false
+          type: string
+        - name: input
+          in: body
+          description: Input to API
+          required: true
+          schema:
+            type: 
+            $ref: '#/definitions/post_input'
+      responses:
+        200:
+          description: API call results
+          schema:
+            $ref: '#/definitions/post_output'
+        default:
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/error'
+  /get:
+    post:
+      security:
+        - APIKey: []
+      summary: Sends GET request
+      description: "Sends a HTTP GET request to the specified URL"
+      parameters:
+        - name: credentials_name
+          in: query
+          description: Optional name of the credentials to use with this request
+          required: false
+          type: string
+        - name: input
+          in: body
+          description: Input to API
+          required: true
+          schema:
+            type: 
+            $ref: '#/definitions/get_input'
+      responses:
+        200:
+          description: API call results
+          schema:
+            $ref: '#/definitions/get_output'
+        default:
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/error'
+  /parse_html_page:
+    post:
+      security:
+        - APIKey: []
+      summary: Parse a HTML page
+      description: "Sends a HTTP GET request to the specified URL and parses the result"
+      parameters:
+        - name: credentials_name
+          in: query
+          description: Optional name of the credentials to use with this request
+          required: false
+          type: string
+        - name: input
+          in: body
+          description: Input to API
+          required: true
+          schema:
+            type: 
+            $ref: '#/definitions/parse_html_page_input'
+      responses:
+        200:
+          description: API call results
+          schema:
+            $ref: '#/definitions/parse_html_page_output'
+        default:
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/error'
+definitions:
+  post_input:
+    type: object
+  get_input:
+    type: object
+  parse_html_page_input:
+    type: object
+    required:
+      - url
+      - headers
+    properties:
+      url:
+        type: string
+      headers:
+        type: object
+  post_output:
+    type: object
+  get_output:
+    type: object
+  parse_html_page_output:
+    type: object
+    required:
+      - document
+    properties:
+      document:
+        type: object
+        description: "HTML document in a hash/array format"
+  error:
+    type: string
+

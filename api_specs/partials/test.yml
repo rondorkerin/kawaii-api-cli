@@ -1,0 +1,18 @@
+service_label: NativeSync Test
+service_name: test
+credentials_type: none
+credentials_template:
+
+paths:
+  - function_name: ping
+    summary: Ping
+    description: Returns pong
+    input:
+    output:
+      pong:
+        type: string
+  - function_name: debug_value
+    summary: Echo Value
+    description: Returns the values passed in by the user
+    input:
+    output:

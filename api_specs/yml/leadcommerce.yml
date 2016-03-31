@@ -1,0 +1,231 @@
+swagger: '2.0'
+info:
+  title: NativeSync API - leadcommerce calls
+  description: leadcommerce calls within NativeAPI
+  version: "1.0.0"
+  x-service-label: LeadCommerce
+  x-service-name: leadcommerce
+  x-credentials-type: keys
+  x-credentials-template:
+      - label: Company Domain
+        system_name: domain
+        type: string
+      - label: Identifier
+        system_name: identifier
+        type: string
+      - label: Key
+        system_name: key
+        type: string
+
+# the domain of the service
+host: api.nativesync.io
+# array of all schemes that your API supports
+schemes:
+  - https
+# will be prefixed to all paths
+basePath: /v1/leadcommerce
+consumes:
+  - application/json
+produces:
+  - application/json
+securityDefinitions:
+  APIKey:
+    type: apiKey
+    name: x-api-key
+    in: header
+paths:
+  /get_orders:
+    post:
+      security:
+        - APIKey: []
+      summary: Get Orders
+      description: "Gets the filtered list of Orders."
+      parameters:
+        - name: credentials_name
+          in: query
+          description: Optional name of the credentials to use with this request
+          required: false
+          type: string
+        - name: input
+          in: body
+          description: Input to API
+          required: true
+          schema:
+            type: 
+            $ref: '#/definitions/get_orders_input'
+      responses:
+        200:
+          description: API call results
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/get_orders_output'
+        default:
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/error'
+  /get_order_info:
+    post:
+      security:
+        - APIKey: []
+      summary: Get Order Info
+      description: "Gets Information regard one or more Orders"
+      parameters:
+        - name: credentials_name
+          in: query
+          description: Optional name of the credentials to use with this request
+          required: false
+          type: string
+        - name: input
+          in: body
+          description: Input to API
+          required: true
+          schema:
+            type: 
+            $ref: '#/definitions/get_order_info_input'
+      responses:
+        200:
+          description: API call results
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/get_order_info_output'
+        default:
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/error'
+  /get_order_product_info:
+    post:
+      security:
+        - APIKey: []
+      summary: Get Product Info for Order
+      description: "Gets Product Information regarding one or more Orders"
+      parameters:
+        - name: credentials_name
+          in: query
+          description: Optional name of the credentials to use with this request
+          required: false
+          type: string
+        - name: input
+          in: body
+          description: Input to API
+          required: true
+          schema:
+            type: 
+            $ref: '#/definitions/get_order_product_info_input'
+      responses:
+        200:
+          description: API call results
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/get_order_product_info_output'
+        default:
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/error'
+definitions:
+  get_orders_input:
+    type: object
+    required:
+      - status
+      - display_id
+      - alternative_id
+      - total_max
+      - total_min
+      - paid_max
+      - paid_min
+      - sale_channel
+      - company
+      - customer_id
+      - customer_type
+      - fully_received_start
+      - fully_received_end
+      - placed_start
+      - placed_end
+      - modify_start
+      - modify_end
+      - limit
+      - page
+    properties:
+      status:
+        type: integer
+      display_id:
+        type: integer
+      alternative_id:
+        type: integer
+      total_max:
+        type: number
+      total_min:
+        type: number
+      paid_max:
+        type: number
+      paid_min:
+        type: number
+      sale_channel:
+        type: integer
+      company:
+        type: integer
+      customer_id:
+        type: integer
+      customer_type:
+        type: integer
+      fully_received_start:
+        type: string
+        format: "date"
+      fully_received_end:
+        type: integer
+      placed_start:
+        type: integer
+      placed_end:
+        type: integer
+      modify_start:
+        type: integer
+      modify_end:
+        type: integer
+      limit:
+        type: integer
+      page:
+        type: integer
+  get_order_info_input:
+    type: object
+    required:
+      - order_ids
+    properties:
+      order_ids:
+        type: array
+        items:
+          type: integer
+  get_order_product_info_input:
+    type: object
+    required:
+      - order_ids
+    properties:
+      order_ids:
+        type: array
+        items:
+          type: integer
+  get_orders_output:
+    type: object
+    required:
+      - order_info
+    properties:
+      order_info:
+        type: object
+  get_order_info_output:
+    type: object
+    required:
+      - order_info
+    properties:
+      order_info:
+        type: object
+  get_order_product_info_output:
+    type: object
+    required:
+      - product_info
+    properties:
+      product_info:
+        type: object
+  error:
+    type: string
+

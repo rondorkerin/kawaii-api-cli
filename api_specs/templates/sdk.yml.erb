@@ -1,0 +1,108 @@
+swagger: '2.0'
+info:
+  title: NativeSync API
+  description: Curated, Unified APIs for Productive Developers
+  version: "1.0.0"
+# the domain of the service
+host: api.nativesync.io
+# array of all schemes that your API supports
+schemes:
+  - https
+# will be prefixed to all paths
+basePath: /v1
+consumes:
+  - application/json
+produces:
+  - application/json
+securityDefinitions:
+  APIKey:
+    type: apiKey
+    name: x-api-key
+    in: header
+paths:
+<% for @service in api_spec_partials %>
+<% for @path in @service['paths'] %>
+  /<%= @service['service_name'] %>/<%= @path['function_name'] %>:
+    post:
+      tags:
+        - <%= @service['service_name'] %>
+        <% unless @path['tags'].blank? %>
+        <% for @tag in @path['tags'] %>
+        - <%= @tag %>
+        <% end %>
+      <% end %>
+      <% unless @path['unauthenticated'] %>
+      security:
+        - APIKey: []
+      <% end %>
+      summary: <%= @path['summary'] %>
+      description: "<%= @path['description'] %>"
+      parameters:
+        - name: credentials_name
+          in: query
+          description: Optional name of the credentials to use with this request
+          required: false
+          type: string
+        - name: input
+          in: body
+          description: Input to API
+          required: true
+          schema:
+            <% if @path['input_type'].blank? or @path['input_type'] == 'object' %>
+            $ref: '#/definitions/<%= @service['service_name'] %>_<%= @path['function_name'] %>_input'
+            <% elsif  @path['input_type'] == 'array' %>
+            type: array
+            items:
+              $ref: '#/definitions/<%= @service['service_name'] %>_<%= @path['function_name'] %>_input'
+            <% end %>
+      responses:
+        200:
+          description: API call results
+          schema:
+            <% if @path['output_type'].blank? or @path['output_type'] == 'object' %>
+            $ref: '#/definitions/<%= @service['service_name'] %>_<%= @path['function_name'] %>_output'
+            <% elsif  @path['output_type'] == 'array' %>
+            type: array
+            items:
+              $ref: '#/definitions/<%= @service['service_name'] %>_<%= @path['function_name'] %>_output'
+            <% end %>
+        default:
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/error'
+<% end %>
+<% end %>
+definitions:
+<% for @service in api_spec_partials %>
+<% for @direction in ['input', 'output'] %>
+<% for @path in @service['paths'] %>
+  <%= @service['service_name'] %>_<%= @path['function_name'] %>_<%= @direction %>:
+    type: object
+    <% unless @path[@direction].blank? %>
+    required:
+    <% @path[@direction].each do |key, attributes| %>
+      - <%= key %>
+    <% end %>
+    properties:
+    <% @path[@direction].each do |key, attributes| %>
+      <%= key %>:
+        type: <%= attributes['type'] %>
+        <% unless attributes['format'].blank? %>
+        format: "<%= attributes['format'] %>"
+        <% end %>
+        <% unless attributes['description'].blank? %>
+        description: "<%= attributes['description'] %>"
+        <% end %>
+        <% if attributes['type'] == 'array' %>
+        items:
+          type: <%= attributes['subtype'] %>
+        <% end %>
+    <% end %>
+    <% end %>
+<% end %>
+<% end %>
+<% end %>
+  error:
+    type: string
+
+

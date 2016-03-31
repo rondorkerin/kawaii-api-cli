@@ -1,0 +1,173 @@
+swagger: '2.0'
+info:
+  title: NativeSync API - Plex ERP calls
+  description: Plex ERP calls within NativeAPI
+  version: "1.0.0"
+  x-service-name: Plex ERP
+  x-service-system-name: plex_erp
+  x-connector-name: Plex
+  x-credentials-type: keys
+  x-credentials-template:
+
+# the domain of the service
+host: api.nativesync.io
+# array of all schemes that your API supports
+schemes:
+  - https
+# will be prefixed to all paths
+basePath: /api/v1/plex_erp
+consumes:
+  - application/json
+produces:
+  - application/json
+securityDefinitions:
+  APIKey:
+    type: apiKey
+    name: x-api-key
+    in: header
+paths:
+  /add_ecommerce_order:
+    post:
+      security:
+        - APIKey: []
+      summary: Add Ecommerce Order
+      description: "Adds an ecommerce order to plex"
+      parameters:
+        - name: credentials_name
+          in: query
+          description: Optional name of the credentials to use with this request
+          required: false
+          type: string
+        - name: input
+          in: body
+          description: Input to API
+          required: true
+          schema:
+            $ref: '#/definitions/add_ecommerce_order_input'
+      responses:
+        200:
+          description: API call results
+          schema:
+            $ref: '#/definitions/add_ecommerce_order_output'
+        default:
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/error'
+  /add_ecommerce_order_line:
+    post:
+      security:
+        - APIKey: []
+      summary: Adds an Ecommerce Order Line
+      description: "Adds a line to an existing Ecommerce Order"
+      parameters:
+        - name: credentials_name
+          in: query
+          description: Optional name of the credentials to use with this request
+          required: false
+          type: string
+        - name: input
+          in: body
+          description: Input to API
+          required: true
+          schema:
+            $ref: '#/definitions/add_ecommerce_order_line_input'
+      responses:
+        200:
+          description: API call results
+          schema:
+            $ref: '#/definitions/add_ecommerce_order_line_output'
+        default:
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/error'
+definitions:
+  add_ecommerce_order_input:
+    type: object
+    properties:
+      customer_code:
+        type: string
+        required: "true"
+      ship_to_customer_address_code:
+        type: string
+        required: "true"
+      bill_to_customer_address_code:
+        type: string
+        required: "true"
+      carrier_code:
+        type: string
+      shipping_service:
+        type: string
+      freight_amount:
+        type: number
+      tax_amount:
+        type: number
+      prepaid_authorization:
+        type: string
+      order_no_prefix:
+        type: string
+      ship_from_building_code:
+        type: string
+      po_category:
+        type: string
+      po_no:
+        type: string
+      freight_terms:
+        type: string
+      po_type:
+        type: string
+      inside_sales:
+        type: string
+      ordered_by:
+        type: string
+      order_terms:
+        type: string
+  add_ecommerce_order_output:
+    type: object
+    properties:
+      order_no:
+        type: string
+      result_code:
+        type: integer
+      result_message:
+        type: string
+      result_error:
+        type: boolean
+  add_ecommerce_order_line_input:
+    type: object
+    properties:
+      customer_code:
+        type: string
+        required: "true"
+      order_no:
+        type: string
+        required: "true"
+      part_no:
+        type: string
+        required: "true"
+      revision:
+        type: string
+      price:
+        type: number
+        required: "true"
+      quantity:
+        type: integer
+        required: "true"
+      due_date:
+        type: string
+        format: "date-time"
+      printed_note:
+        type: string
+      note:
+        type: string
+  add_ecommerce_order_line_output:
+    type: object
+    properties:
+      result_code:
+        type: integer
+      result_message:
+        type: string
+      result_error:
+        type: boolean
+  error:
+    type: string
+

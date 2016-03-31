@@ -1,0 +1,44 @@
+service_label: Insightly
+service_name: insightly
+credentials_type: keys
+credentials_template:
+  - label: API Key
+    system_name: apikey
+    type: string
+
+paths:
+  - function_name: get_recent_contacts
+    summary: Recently Updated/Created Contacts
+    description: Contacts that have been recently updated or created in Insightly.
+    input:
+      time:
+        type: string
+    output:
+  - function_name: create_contact
+    summary: Create a Insightly contact
+    description: Creates a Insightly contact
+    input:
+      firstname:
+        type: string
+      lastname:
+        type: string
+      email:
+        type: string
+      custom_fields:
+        type: object
+    output:
+  - function_name: update_contact
+    summary: Update Insightly contact
+    description: Updates a Insightly contact
+    input:
+      vid:
+        type: string
+      firstname:
+        type: string
+      lastname:
+        type: string
+      email:
+        type: string
+      custom_fields:
+        type: object
+    output:

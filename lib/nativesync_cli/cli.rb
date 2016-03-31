@@ -1,4 +1,5 @@
 require 'thor'
+require 'erubis'
 require 'nativesync_cli'
 require 'nativesync_cli/version'
 require 'json'
@@ -117,6 +118,22 @@ module NativeSyncCli
       rescue Exception => e
         ui.error e
       end
+    end
+
+    desc "compile", "compile api_specs into ns_sdk.json"
+    def compile
+      sdk_api_spec_template = File.read('api_specs/templates/sdk.yml.erb')
+      client_api_spec_template = File.read('api_specs/templates/service.yml.erb')
+      api_spec_partials = []
+      Dir['api_specs/partials/*'].each do |file_name|
+        next if File.directory? file_name
+        partial_yaml = YAML.load_file(file_name)
+        api_spec_partials << partial_yaml
+      end
+      ns_sdk_yaml =  Erubis::Eruby.new(sdk_api_spec_template).result({'api_spec_partials' => api_spec_partials})
+      File.open('api_specs/yml/ns_sdk.yml', 'w') { |file| file.write(ns_sdk_yaml) }
+      File.open('api_specs/json/ns_sdk.json', 'w') { |file| file.write(YAML.load(ns_sdk_yaml).to_json) }
+      File.open('ns_sdk.json', 'w') { |file| file.write(YAML.load(ns_sdk_yaml).to_json) }
     end
   end
 end

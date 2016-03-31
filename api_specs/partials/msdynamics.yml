@@ -1,0 +1,47 @@
+service_label: Microsoft Dynamics
+service_name: msdynamics
+credentials_type: keys
+credentials_template:
+  - label: API Key
+    system_name: apikey
+    type: string
+  - label: Secret Key
+    system_name: secret
+    type: string
+
+paths:
+  - function_name: get_recent_contacts
+    summary: Recently Updated/Created Contacts
+    description: Contacts that have been recently updated or created in Microsoft Dynamics.
+    input:
+      time:
+        type: string
+    output:
+  - function_name: create_contact
+    summary: Create a Microsoft Dynamics contact
+    description: Creates a Microsoft Dynamics contact
+    input:
+      firstname:
+        type: string
+      lastname:
+        type: string
+      email:
+        type: string
+      custom_fields:
+        type: object
+    output:
+  - function_name: update_contact
+    summary: Update Microsoft Dynamics contact
+    description: Updates a Microsoft Dynamics contact
+    input:
+      vid:
+        type: string
+      firstname:
+        type: string
+      lastname:
+        type: string
+      email:
+        type: string
+      custom_fields:
+        type: object
+    output:

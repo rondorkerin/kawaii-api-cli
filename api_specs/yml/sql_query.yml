@@ -1,0 +1,211 @@
+swagger: '2.0'
+info:
+  title: NativeSync API - sql_query calls
+  description: sql_query calls within NativeAPI
+  version: "1.0.0"
+  x-service-label: SQL Query
+  x-service-name: sql_query
+  x-credentials-type: none
+  x-credentials-template:
+
+# the domain of the service
+host: api.nativesync.io
+# array of all schemes that your API supports
+schemes:
+  - https
+# will be prefixed to all paths
+basePath: /v1/sql_query
+consumes:
+  - application/json
+produces:
+  - application/json
+securityDefinitions:
+  APIKey:
+    type: apiKey
+    name: x-api-key
+    in: header
+paths:
+  /select:
+    post:
+      security:
+        - APIKey: []
+      summary: Select Query
+      description: "Please review our DB security guide before attempting this function."
+      parameters:
+        - name: credentials_name
+          in: query
+          description: Optional name of the credentials to use with this request
+          required: false
+          type: string
+        - name: input
+          in: body
+          description: Input to API
+          required: true
+          schema:
+            type: 
+            $ref: '#/definitions/select_input'
+      responses:
+        200:
+          description: API call results
+          schema:
+            $ref: '#/definitions/select_output'
+        default:
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/error'
+  /insert:
+    post:
+      security:
+        - APIKey: []
+      summary: Insert Query
+      description: "Please review our DB security guide before attempting this function."
+      parameters:
+        - name: credentials_name
+          in: query
+          description: Optional name of the credentials to use with this request
+          required: false
+          type: string
+        - name: input
+          in: body
+          description: Input to API
+          required: true
+          schema:
+            type: 
+            $ref: '#/definitions/insert_input'
+      responses:
+        200:
+          description: API call results
+          schema:
+            $ref: '#/definitions/insert_output'
+        default:
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/error'
+  /update:
+    post:
+      security:
+        - APIKey: []
+      summary: Update Query
+      description: "Please review our DB security guide before attempting this function."
+      parameters:
+        - name: credentials_name
+          in: query
+          description: Optional name of the credentials to use with this request
+          required: false
+          type: string
+        - name: input
+          in: body
+          description: Input to API
+          required: true
+          schema:
+            type: 
+            $ref: '#/definitions/update_input'
+      responses:
+        200:
+          description: API call results
+          schema:
+            $ref: '#/definitions/update_output'
+        default:
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/error'
+  /delete:
+    post:
+      security:
+        - APIKey: []
+      summary: Delete Query
+      description: "Please review our DB security guide before attempting this function."
+      parameters:
+        - name: credentials_name
+          in: query
+          description: Optional name of the credentials to use with this request
+          required: false
+          type: string
+        - name: input
+          in: body
+          description: Input to API
+          required: true
+          schema:
+            type: 
+            $ref: '#/definitions/delete_input'
+      responses:
+        200:
+          description: API call results
+          schema:
+            $ref: '#/definitions/delete_output'
+        default:
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/error'
+definitions:
+  select_input:
+    type: object
+    required:
+      - db_type
+      - connect_string
+      - query
+    properties:
+      db_type:
+        type: string
+        description: "allowed: mysql, postgresql"
+      connect_string:
+        type: string
+        description: "DB connect string"
+      query:
+        type: string
+  insert_input:
+    type: object
+    required:
+      - db_type
+      - connect_string
+      - query
+    properties:
+      db_type:
+        type: string
+        description: "allowed: mysql, postgresql"
+      connect_string:
+        type: string
+        description: "DB connect string"
+      query:
+        type: string
+  update_input:
+    type: object
+    required:
+      - db_type
+      - connect_string
+      - query
+    properties:
+      db_type:
+        type: string
+        description: "allowed: mysql, postgresql"
+      connect_string:
+        type: string
+        description: "DB connect string"
+      query:
+        type: string
+  delete_input:
+    type: object
+    required:
+      - db_type
+      - connect_string
+      - query
+    properties:
+      db_type:
+        type: string
+        description: "allowed: mysql, postgresql"
+      connect_string:
+        type: string
+        description: "DB connect string"
+      query:
+        type: string
+  select_output:
+    type: object
+  insert_output:
+    type: object
+  update_output:
+    type: object
+  delete_output:
+    type: object
+  error:
+    type: string
+

@@ -1,0 +1,48 @@
+service_label: Mailchimp
+service_name: mailchimp
+credentials_type: keys
+credentials_template:
+  - label: API Key
+    system_name: apikey
+    type: string
+
+paths:
+  - function_name: create_list_member
+    summary: Subscribe Member to List
+    description: Subscribes a member to a Mailchimp list.
+    input:
+      list_id:
+        type: integer
+      status:
+        type: string
+      first_name:
+        type: string
+      last_name:
+        type: string
+      email_address:
+        type: string
+    output:
+  - function_name: update_list_member
+    summary: Update List Member
+    description: Updates an existing list member in Mailchimp
+    input:
+      list_id:
+        type: integer
+      status:
+        type: string
+      first_name:
+        type: string
+      last_name:
+        type: string
+      email_address:
+        type: string
+    output:
+  - function_name: get_list_member
+    summary: Get List Member
+    description: Gets a list member by email address
+    input:
+      list_id:
+        type: integer
+      email_address:
+        type: string
+    output:

@@ -20,4 +20,6 @@ Gem::Specification.new do |gem|
   gem.add_runtime_dependency "thor", "~> 0.19.1"
   gem.add_runtime_dependency "json", "~> 1.8.3"
   gem.add_runtime_dependency "rest-client", "~> 1.8.0"
+  gem.add_runtime_dependency "erubis", "~> 2.7.0"
+  gem.add_runtime_dependency "activesupport", "~> 4.2.6"
 end

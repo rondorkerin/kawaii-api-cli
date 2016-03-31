@@ -1,0 +1,172 @@
+swagger: '2.0'
+info:
+  title: NativeSync API - mailchimp calls
+  description: mailchimp calls within NativeAPI
+  version: "1.0.0"
+  x-service-label: Mailchimp
+  x-service-name: mailchimp
+  x-credentials-type: keys
+  x-credentials-template:
+      - label: API Key
+        system_name: apikey
+        type: string
+
+# the domain of the service
+host: api.nativesync.io
+# array of all schemes that your API supports
+schemes:
+  - https
+# will be prefixed to all paths
+basePath: /v1/mailchimp
+consumes:
+  - application/json
+produces:
+  - application/json
+securityDefinitions:
+  APIKey:
+    type: apiKey
+    name: x-api-key
+    in: header
+paths:
+  /create_list_member:
+    post:
+      security:
+        - APIKey: []
+      summary: Subscribe Member to List
+      description: "Subscribes a member to a Mailchimp list."
+      parameters:
+        - name: credentials_name
+          in: query
+          description: Optional name of the credentials to use with this request
+          required: false
+          type: string
+        - name: input
+          in: body
+          description: Input to API
+          required: true
+          schema:
+            type: 
+            $ref: '#/definitions/create_list_member_input'
+      responses:
+        200:
+          description: API call results
+          schema:
+            $ref: '#/definitions/create_list_member_output'
+        default:
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/error'
+  /update_list_member:
+    post:
+      security:
+        - APIKey: []
+      summary: Update List Member
+      description: "Updates an existing list member in Mailchimp"
+      parameters:
+        - name: credentials_name
+          in: query
+          description: Optional name of the credentials to use with this request
+          required: false
+          type: string
+        - name: input
+          in: body
+          description: Input to API
+          required: true
+          schema:
+            type: 
+            $ref: '#/definitions/update_list_member_input'
+      responses:
+        200:
+          description: API call results
+          schema:
+            $ref: '#/definitions/update_list_member_output'
+        default:
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/error'
+  /get_list_member:
+    post:
+      security:
+        - APIKey: []
+      summary: Get List Member
+      description: "Gets a list member by email address"
+      parameters:
+        - name: credentials_name
+          in: query
+          description: Optional name of the credentials to use with this request
+          required: false
+          type: string
+        - name: input
+          in: body
+          description: Input to API
+          required: true
+          schema:
+            type: 
+            $ref: '#/definitions/get_list_member_input'
+      responses:
+        200:
+          description: API call results
+          schema:
+            $ref: '#/definitions/get_list_member_output'
+        default:
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/error'
+definitions:
+  create_list_member_input:
+    type: object
+    required:
+      - list_id
+      - status
+      - first_name
+      - last_name
+      - email_address
+    properties:
+      list_id:
+        type: integer
+      status:
+        type: string
+      first_name:
+        type: string
+      last_name:
+        type: string
+      email_address:
+        type: string
+  update_list_member_input:
+    type: object
+    required:
+      - list_id
+      - status
+      - first_name
+      - last_name
+      - email_address
+    properties:
+      list_id:
+        type: integer
+      status:
+        type: string
+      first_name:
+        type: string
+      last_name:
+        type: string
+      email_address:
+        type: string
+  get_list_member_input:
+    type: object
+    required:
+      - list_id
+      - email_address
+    properties:
+      list_id:
+        type: integer
+      email_address:
+        type: string
+  create_list_member_output:
+    type: object
+  update_list_member_output:
+    type: object
+  get_list_member_output:
+    type: object
+  error:
+    type: string
+

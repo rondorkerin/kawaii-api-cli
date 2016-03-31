@@ -1,0 +1,58 @@
+service_label: SQL Query
+service_name: sql_query
+credentials_type: none
+credentials_template:
+
+paths:
+  - function_name: select
+    summary: Select Query
+    description: Please review our DB security guide before attempting this function.
+    input:
+      db_type:
+        type: string
+        description: "allowed: mysql, postgresql"
+      connect_string:
+        type: string
+        description: "DB connect string"
+      query:
+        type: string
+    output:
+  - function_name: insert
+    summary: Insert Query
+    description: Please review our DB security guide before attempting this function.
+    input:
+      db_type:
+        type: string
+        description: "allowed: mysql, postgresql"
+      connect_string:
+        type: string
+        description: "DB connect string"
+      query:
+        type: string
+    output:
+  - function_name: update
+    summary: Update Query
+    description: Please review our DB security guide before attempting this function.
+    input:
+      db_type:
+        type: string
+        description: "allowed: mysql, postgresql"
+      connect_string:
+        type: string
+        description: "DB connect string"
+      query:
+        type: string
+    output:
+  - function_name: delete
+    summary: Delete Query
+    description: Please review our DB security guide before attempting this function.
+    input:
+      db_type:
+        type: string
+        description: "allowed: mysql, postgresql"
+      connect_string:
+        type: string
+        description: "DB connect string"
+      query:
+        type: string
+    output:

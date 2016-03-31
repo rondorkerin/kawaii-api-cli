@@ -1,0 +1,44 @@
+service_label: Hubspot
+service_name: hubspot
+credentials_type: keys
+credentials_template:
+  - label: API Key
+    system_name: hapikey
+    type: string
+
+paths:
+  - function_name: get_recent_contacts
+    summary: Recently Updated/Created Contacts
+    description: Contacts that have been recently updated or created in Hubspot.
+    input:
+      time:
+        type: string
+    output:
+  - function_name: create_contact
+    summary: Create a Hubspot contact
+    description: Creates a Hubspot contact
+    input:
+      firstname:
+        type: string
+      lastname:
+        type: string
+      email:
+        type: string
+      custom_fields:
+        type: object
+    output:
+  - function_name: update_contact
+    summary: Update Hubspot contact
+    description: Updates a Hubspot contact
+    input:
+      vid:
+        type: string
+      firstname:
+        type: string
+      lastname:
+        type: string
+      email:
+        type: string
+      custom_fields:
+        type: object
+    output:

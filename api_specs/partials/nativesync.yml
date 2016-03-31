@@ -1,0 +1,76 @@
+service_label: NativeSync
+service_name: nativesync
+credentials_type: none
+credentials_template:
+
+paths:
+  - function_name: login
+    summary: Login
+    description: Returns an API token upon successful login.
+    unauthenticated: true
+    input:
+      email:
+        type: string
+      password:
+        type: string
+    output:
+      apikey:
+        type: string
+  - function_name: set_credentials
+    summary: Create/Update Service Credentials
+    description: Create/Update a named set of credentials for a particular service
+    input:
+      credentials:
+        type: object
+        description: A hash representing the credentials required for the service
+        required: true
+      service_name:
+        type: string
+        description: The name of the service to set credentials for
+        required: true
+      name:
+        type: string
+        description: An optional name for the credential set. Use this later to specify a particular set of credentials to use for an API call.
+    output:
+      success:
+        type: boolean
+  - function_name: upload_cloud_function
+    summary: Upload Cloud Function
+    description: Creates/Updates a function in the nativesync cloud
+    input:
+      function_name:
+        type: string
+        description: The name of your cloud function, only alphanumeric characters and underscores are allowed.
+        required: true
+      program:
+        type: string
+        description: The cloud function program as specified by the nativesync documentation.
+        required: true
+      schedule:
+        type: string
+        description: A schedule specified in cron format for how often the function should execute (visit http://crontab.guru/ for examples). Note - a job cannot be scheduled to run more than once every 15 minutes currently.
+        required: true
+      language:
+        type: string
+        description: by default, only the value 'nodejs' is supported.
+        required: true
+      description:
+        type: string
+    output:
+      success:
+        type: boolean
+  - function_name: trigger_cloud_function
+    summary: Trigger Cloud Function
+    description: Triggers a function in the nativesync cloud with the specified input
+    input:
+      function_name:
+        type: string
+        description: The name of your cloud function, only alphanumeric characters and underscores are allowed.
+        required: true
+      input:
+        type: object
+        description: A hash specifying input variables to send to the function
+        required: true
+    output:
+      success:
+        type: boolean

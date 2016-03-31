@@ -1,0 +1,100 @@
+swagger: '2.0'
+info:
+  title: NativeSync API - test calls
+  description: test calls within NativeAPI
+  version: "1.0.0"
+  x-service-label: NativeSync Test
+  x-service-name: test
+  x-credentials-type: none
+  x-credentials-template:
+
+# the domain of the service
+host: api.nativesync.io
+# array of all schemes that your API supports
+schemes:
+  - https
+# will be prefixed to all paths
+basePath: /v1/test
+consumes:
+  - application/json
+produces:
+  - application/json
+securityDefinitions:
+  APIKey:
+    type: apiKey
+    name: x-api-key
+    in: header
+paths:
+  /ping:
+    post:
+      security:
+        - APIKey: []
+      summary: Ping
+      description: "Returns pong"
+      parameters:
+        - name: credentials_name
+          in: query
+          description: Optional name of the credentials to use with this request
+          required: false
+          type: string
+        - name: input
+          in: body
+          description: Input to API
+          required: true
+          schema:
+            type: 
+            $ref: '#/definitions/ping_input'
+      responses:
+        200:
+          description: API call results
+          schema:
+            $ref: '#/definitions/ping_output'
+        default:
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/error'
+  /debug_value:
+    post:
+      security:
+        - APIKey: []
+      summary: Echo Value
+      description: "Returns the values passed in by the user"
+      parameters:
+        - name: credentials_name
+          in: query
+          description: Optional name of the credentials to use with this request
+          required: false
+          type: string
+        - name: input
+          in: body
+          description: Input to API
+          required: true
+          schema:
+            type: 
+            $ref: '#/definitions/debug_value_input'
+      responses:
+        200:
+          description: API call results
+          schema:
+            $ref: '#/definitions/debug_value_output'
+        default:
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/error'
+definitions:
+  ping_input:
+    type: object
+  debug_value_input:
+    type: object
+  ping_output:
+    type: object
+    required:
+      - pong
+    properties:
+      pong:
+        type: string
+  debug_value_output:
+    type: object
+  error:
+    type: string
+

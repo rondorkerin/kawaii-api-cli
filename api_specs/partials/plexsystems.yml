@@ -1,0 +1,63 @@
+service_label: Plex Systems ERP
+service_name: plexsystems
+credentials_type: keys
+credentials_template:
+  - label: Username
+    system_name: username
+    type: string
+  - label: Password
+    system_name: password
+    type: string
+  - label: Use Test API?
+    system_name: use_test_api
+    type: boolean
+
+paths:
+  - function_name: add_ecommerce_order
+    summary: Add Ecommerce Order
+    description: Adds an ecommerce order to plex
+    input:
+      customer_code:
+        type: string
+        required: true
+      ship_to_customer_address_code:
+        type: string
+        required: true
+      bill_to_customer_address_code:
+        type: string
+        required: true
+    output:
+      order_no:
+        type: string
+      result_code:
+        type: integer
+      result_message:
+        type: string
+      result_error:
+        type: boolean
+  - function_name: add_ecommerce_order_line
+    summary: Adds an Ecommerce Order Line
+    description: Adds a line to an existing Ecommerce Order
+    input:
+      customer_code:
+        type: string
+        required: true
+      order_no:
+        type: string
+        required: true
+      part_no:
+        type: string
+        required: true
+      price:
+        type: number
+        required: true
+      quantity:
+        type: integer
+        required: true
+    output:
+      result_code:
+        type: integer
+      result_message:
+        type: string
+      result_error:
+        type: boolean

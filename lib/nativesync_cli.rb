@@ -1,4 +1,5 @@
 require 'yaml'
+require 'active_support/all'
 
 module NativeSyncCli
   class << self
